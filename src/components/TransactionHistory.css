@@ -1,0 +1,91 @@
+.tx-history {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+}
+
+.tx-title {
+  color: white;
+  font-size: 1.125rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.tx-table-container {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 300px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.tx-table-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.tx-table-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tx-table-container::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.tx-table {
+  width: 100%;
+  color: white;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.tx-table th,
+.tx-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tx-table thead tr {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.tx-table th,
+.tx-table td {
+  padding: 0.5rem 1rem;
+}
+
+.tx-table tbody tr {
+  transition: background-color 0.3s;
+}
+
+.tx-table tbody tr:hover {
+  background-color: rgba(99, 102, 241, 0.2);
+}
+
+.tx-type {
+  font-weight: 600;
+}
+
+.tx-hash {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.tx-status {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.tx-status.success {
+  background-color: rgba(34, 197, 94, 0.8);
+}
+
+.tx-status.failed {
+  background-color: rgba(239, 68, 68, 0.8);
+}
