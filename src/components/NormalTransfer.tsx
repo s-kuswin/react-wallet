@@ -6,6 +6,7 @@ import './TransactionHistory.css';
 const INFURA_PROJECT_ID = "142e5c27dd8e4af6abff2be271add6ac";
 const network = "sepolia";
 const provider = new ethers.JsonRpcProvider(`https://${network}.infura.io/v3/${INFURA_PROJECT_ID}`);
+const ETHERSCAN_API_KEY = (import.meta as any)?.env?.VITE_ETHERSCAN_API_KEY || '';
 
 declare global {
   interface Window {
@@ -27,7 +28,30 @@ export default function NormalTransfer() {
 
   // 获取交易历史记录
   const fetchTransactionHistory = async (address: string) => {
-    
+    if (!address) {
+      setTransactions([]);
+      return;
+    }
+    try {
+      const url = `https://api-sepolia.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&sort=desc${ETHERSCAN_API_KEY ? `&apikey=${ETHERSCAN_API_KEY}` : ''}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data.status !== '1' || !Array.isArray(data.result)) {
+        setTransactions([]);
+        return;
+      }
+      const items: Transaction[] = data.result.slice(0, 20).map((tx: any) => ({
+        hash: tx.hash,
+        type: '转账',
+        amount: `${ethers.formatEther(tx.value)} ETH`,
+        time: new Date(Number(tx.timeStamp) * 1000).toLocaleString(),
+        status: tx.txreceipt_status === '1' ? '成功' : '失败'
+      }));
+      setTransactions(items);
+    } catch (e) {
+      console.error('获取交易历史失败:', e);
+      setTransactions([]);
+    }
   };
 
   // 连接钱包并获取交易历史
@@ -138,7 +162,7 @@ export default function NormalTransfer() {
         </button>
       </form>
 
-      {/* <div className="tx-history">
+      <div className="tx-history">
         <div className="tx-title">
           历史交易
         </div>
@@ -170,7 +194,7 @@ export default function NormalTransfer() {
             </tbody>
           </table>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
